@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <button></button>
+
+    <div class="filters hidden">
+
+        <section id="era-container">
+            <label for="era-select">Select from which era</label>
+            <select name="era" id="era-select">
+                <option value="all" selected>All</option>
+                <option value="after-2020">After 2020</option>
+                <option value="before-2020">Before 2020</option>
+            </select>
+        </section>
+
+        <section id="time-container">
+            <label for="time-input">Select when you are free. Please enter <span class="italic">all</span> or a time such as <span class="italic">18:00</span></label>
+            <input type="text" id="time-input" value="all">
+        </section>
+
+        <section id="rating-container">
+            <label for="rating-input">Select your minimum rating. Please enter any number between 0 and 5 included</label>
+            <input type="number" id="rating-input" value="0" min="0" max="5">
+        </section>
+
+        <section id="day-container">
+            <label for="day-select">Select for which day</label>
+            <select name="days" id="day-select">
+                <option value="0" selected>Today</option>
+                <option value="1">Tomorrow</option>
+                <option value="2">J+2</option>
+                <option value="3">J+3</option>
+                <option value="4">J+4</option>
+                <option value="5">J+5</option>
+                <option value="6">J+6</option>
+            </select>
+        </section>
+
+    </div>
+
+
+
+    <div class="fire">
+        <button id="fire">Clique</button>
+    </div>
+    
+    <div class="table">
+        <table>
+            <thead>
+
+            </thead>
+
+            <tbody>
+                <tr>
+
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+
+
+    <script src="main.js"></script>
+</body>
+</html>

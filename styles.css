@@ -1,0 +1,86 @@
+* {
+    box-sizing: border-box;
+    color: white;
+    background-color: rgb(47,79,79);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+img {
+    max-width: 200px;
+    max-height: 120px;
+}
+
+.italic {
+    font-style: italic;
+}
+
+
+div.filters {
+    max-width: 1600px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 2.5rem;
+}
+div.filters select {
+    font-size: 2rem;
+}
+
+div.filters input {
+    font-size: 2rem;
+}
+
+
+div.fire {
+    text-align: center;
+}
+
+div.fire button {
+    margin: 50px 0;
+    font-size: 3rem;
+}
+
+
+div.table {
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+th {
+    border: 1px solid whitesmoke;
+    width: 100%;
+    text-align: center;
+    font-size: 3rem;
+}
+
+tbody {
+    width: 100%;
+    /* background-color: aqua; */
+}
+
+tr, td {
+    border: 1px solid whitesmoke;
+}
+
+td.poster {
+    text-align: center;
+    width: 30%;
+}
+
+td.title {
+    width: 70%;
+    font-size: 2rem;
+}
