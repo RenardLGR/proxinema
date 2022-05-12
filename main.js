@@ -246,74 +246,113 @@ function filterFilms(preference, arrOfFilmObject) {
     //preference [era, earliestFilmTime, rating]
     let result = arrOfFilmObject
 
-    if(preference[0]==='all'){   }
-    else if(preference[0]==='after-2020') {
-        result = getFilmsAfter2020(result)
-    }
-    else if(preference[0]==='before-2020') {
-        result = getFilmsBefore2020(result)
-    }
+    let era=preference[0]
+    let earliestFilmTime=preference[1]
+
+    //console.log(preference);
+
+    result = filterEra(result, era)
+    result = filterFilmsAfterAGivenTime(result , earliestFilmTime)
 
     return result
 }
 
 
-function getFilmsAfter2020(arrOfFilmObject) {
-    //Takes an array of film object
-    //returns an array of films objects all older than 2020 i.e. release date > 2020
-    //date should be 'YYYY-MM-DD'
-    let limit = new Date('2020-01-01')
-    let result=[]
-    for (let i=0 ; i<arrOfFilmObject.length ; i++) {
-        let date= new Date(arrOfFilmObject[i].releaseDate)
-        if(date>=limit) {
-            result.push(arrOfFilmObject[i])
+
+
+function filterEra(arrOfFilmObject, era) {
+    //takes an array of film objects and an era from preference
+    let result = arrOfFilmObject
+
+    if(era==='all'){   }
+    else if(era==='after-2020') {
+        result = keepFilmsAfter2020(result)
+    }
+    else if(era==='before-2020') {
+        result = keepFilmsBefore2020(result)
+    }
+
+    return result
+
+
+
+    function keepFilmsAfter2020(arrOfFilmObject) {
+        //Takes an array of film object
+        //returns an array of films objects all older than 2020 i.e. release date > 2020
+        //date should be 'YYYY-MM-DD'
+        let limit = new Date('2020-01-01')
+        let result=[]
+        for (let i=0 ; i<arrOfFilmObject.length ; i++) {
+            let date= new Date(arrOfFilmObject[i].releaseDate)
+            if(date>=limit) {
+                result.push(arrOfFilmObject[i])
+            }
         }
+    
+        return result
     }
-
-    return result
-}
-
-// console.log(workingArr);
-// console.log(getFilmsAfter2020(workingArr));
-
-function getFilmsBefore2020(arrOfFilmObject) {
-    //Takes an array of film object
-    //returns an array of films objects all older than 2020 i.e. release date > 2020
-    //date should be 'YYYY-MM-DD'
-    let limit = new Date('2020-01-01')
-    let result=[]
-    for (let i=0 ; i<arrOfFilmObject.length ; i++) {
-        let date= new Date(arrOfFilmObject[i].releaseDate)
-        if(date<=limit) {
-            result.push(arrOfFilmObject[i])
+    
+    
+    function keepFilmsBefore2020(arrOfFilmObject) {
+        //Takes an array of film object
+        //returns an array of films objects all older than 2020 i.e. release date > 2020
+        //date should be 'YYYY-MM-DD'
+        let limit = new Date('2020-01-01')
+        let result=[]
+        for (let i=0 ; i<arrOfFilmObject.length ; i++) {
+            let date= new Date(arrOfFilmObject[i].releaseDate)
+            if(date<=limit) {
+                result.push(arrOfFilmObject[i])
+            }
         }
+    
+        return result
     }
-
-    return result
+    
 }
 
-//console.log(getFilmsBefore2020(workingArr))
-
-function getFilmsWithARatingGreaterThan(arrOfFilmObject, rating) {
+function keepFilmsWithARatingGreaterThan(arrOfFilmObject, rating) {
     if(rating>=0 && rating<=5) {
         return arrOfFilmObject.filter( elem => elem.rating>rating)
     }
 }
 
-// console.log(workingArr);
-// console.log(getFilmsWithARatingGreaterThan(workingArr, 3));
 
-function getFilmsAfterAGivenTime(arrOfFilmObject, time) {
-    let result=[]
+function filterFilmsAfterAGivenTime(arrOfFilmObject, time) {
+    //Takes an array of film object and a time all or 18:00
+    //returns an array of films objects having at least a showtime > than time
+    let result=arrOfFilmObject
 
-    for(let i=0 ; i<arrOfFilmObject.length ; i++) {
+    if(time==='all') {
+        return result
+    }
+    else{
+        let jPlus = Number(getDay()) //0 to 6
+        let today = new Date()
+        let limit = new Date(today)
+        limit.setDate(limit.getDate() + jPlus) //if the today is 31 it will change month (or year is it is 31 december) // so all good
+        let hour = Number(time.split(':')[0])
+        let minute = Number(time.split(':')[1])
+        limit.setHours(hour,minute,0,0) //change hours and minutes to what we need
+    
+        //console.log(limit);
 
+        result = result.filter(film => { //result is an array of film object
+            let res=false
+
+            for(let showtime of film.showtime) { //film.showtime is an array of shotimes like [ ["VF", 2022-05-14T14:00:00] , ["VO", 2022-05-14T18:00:00] ]
+                let date = new Date(showtime[1]) //create the date of the showtime
+                if(date>=limit){ //if it is later than limit
+                    res = true
+                }
+            }
+            return res
+        })
+    
+        return result
     }
 
-    let limit = new Date(result[j].showtimes.original[k].startsAt || result[j].showtimes.multiple[k].startsAt)
 }
-
 
 
 
@@ -446,7 +485,7 @@ function displayTable(arrOfFilmObject) {
 
 //GET INFOS FROM THE DOM
 function getDay() {
-    let day = document.querySelector('#day-select').value
+    let day = document.querySelector('#day-select').value // 0 to 6
     return day
 }
 
@@ -458,7 +497,8 @@ function getPreference() {
 
     let era=getEra()
     let earliestFilmTime=getEarliestFilm()
-    let rating ='tocomplete'
+    let rating = getRating()
+
     return [era, earliestFilmTime, rating]
 
 }
@@ -469,10 +509,10 @@ function getEra() {
 }
 
 function getEarliestFilm() {
-    let time = document.querySelector('#time-input').value
+    let time = document.querySelector('#time-input').value // all OR 18:00
     if(time==='all') {
         return 'all'
-    }else {
+    }else { //check validity of input, returns all if unvalid
         time=time.split(':')
 
         if( Number(time[0])<=24 && Number(time[0])>=0 && Number(time[1])<=60 && Number(time[1])>=0) {
@@ -482,14 +522,45 @@ function getEarliestFilm() {
             return 'all'
         }
     }
+    //return all OR 18:00
 }
 
 function getRating() {
     let rating=Number(document.querySelector('#rating-input').value)
-    if(rating<=0) {
+    if(rating<=0) { //check validity of input
         rating=0
     }else if(rating>=5){
         rating=5
     }
-    return rating
+    return rating // 0 to 5
+}
+
+
+
+
+
+
+
+
+
+
+//=================================================================================================================================================================================
+//Get the button:
+let mybutton = document.getElementById("to-top-button");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
