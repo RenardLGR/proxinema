@@ -79,9 +79,12 @@ function fetchAll(urlArr, list) {
     let result=list
 
     if(urlArr.length<=0) {
-        console.log(result)
+        console.log('allFilms : ',result)
 
-        //let preference=getPreference()
+        let preference=getPreference() //preference = [era, earliestFilmTime, rating]
+
+        result = filterFilms(preference, result)
+        console.log('Filtered Films : ',result)
 
         displayTable(result)
 
@@ -96,12 +99,14 @@ function fetchAll(urlArr, list) {
             //calls
             result.concat( getInfosOfACinema(data, urlArr[0][0], list) )
             urlArr.shift()
-            fetchAll(urlArr, list)
-            //calls
+
+            //fetchAll(urlArr, list)
+            fetchAll(urlArr, result) //both seems to work and give the same result but I can't see why
+            
 
 
 
-            console.log(list);
+            //console.log(list);
 
 
         })
@@ -235,6 +240,24 @@ function getInfosOfACinema(data, cinema, totalList) {
 
 //==========================================================================
 //SORTING FUNCTIONS
+
+function filterFilms(preference, arrOfFilmObject) {
+    //takes an arrOfFilmObject and a preference list ; returns a filtered arrOfFilmObject
+    //preference [era, earliestFilmTime, rating]
+    let result = arrOfFilmObject
+
+    if(preference[0]==='all'){   }
+    else if(preference[0]==='after-2020') {
+        result = getFilmsAfter2020(result)
+    }
+    else if(preference[0]==='before-2020') {
+        result = getFilmsBefore2020(result)
+    }
+
+    return result
+}
+
+
 function getFilmsAfter2020(arrOfFilmObject) {
     //Takes an array of film object
     //returns an array of films objects all older than 2020 i.e. release date > 2020
@@ -428,20 +451,20 @@ function getDay() {
 }
 
 function getPreference() {
-    //return an array of preference [era, earliestFilmTime]
+    //return an array of preference [era, earliestFilmTime, rating]
     //where era=both, after2020 or before2020
     //where earliestFilmTime = all, 18:00, 22:00 etc
     //where rating = number between [0,5]
 
     let era=getEra()
     let earliestFilmTime=getEarliestFilm()
-
+    let rating ='tocomplete'
     return [era, earliestFilmTime, rating]
 
 }
 
 function getEra() {
-    let era = document.querySelector('#era-select').value
+    let era = document.querySelector('#era-select').value // all OR after-2020 OR before-2020
     return era
 }
 
