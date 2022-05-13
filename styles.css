@@ -43,6 +43,7 @@ div.fire {
 }
 
 div.fire button {
+    cursor: pointer;
     margin: 50px 0;
     font-size: 3rem;
 }
