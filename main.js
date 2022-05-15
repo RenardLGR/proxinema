@@ -16,35 +16,11 @@ const days = ['' , 'd-1/' , 'd-2/' , 'd-3/' , 'd-4/' , 'd-5/' , 'd-6/']
 // exemple : https://www.allocine.fr/_/showtimes/theater-C0153/d-6/
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+displayDays()
 
 
 document.querySelector('#fire').addEventListener('click', fire)
+
 
 function fire() {
 
@@ -55,6 +31,34 @@ function fire() {
 
 
     fetchAll( getArrayOfUrl(cinemasList, day) , [] )
+
+}
+
+
+
+function getDayFromInt(day)
+{
+	const weekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+	return weekday[day];
+	
+}
+function displayDays() {
+    let header
+
+	
+
+	const d = new Date();
+	let day = getDayFromInt(d.getDay())
+	
+	
+	for (let i=0; i<7;i++) {
+		let day = getDayFromInt(d.getDay()+i);
+		const option = document.createElement('option') 
+		option.value = i//
+		option.innerText = day // 
+		document.querySelector('#day-select').appendChild(option)
+
+	}	
 
 }
 
@@ -113,34 +117,6 @@ function fetchAll(urlArr, list) {
         .catch(err=> console.log(err))
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -214,26 +190,6 @@ function getInfosOfACinema(data, cinema, totalList) {
     return listToReturn
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -358,27 +314,6 @@ function filterFilmsAfterAGivenTime(arrOfFilmObject, time) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //DISPLAY FUNCTION
 
 function displayHeader(day) {
@@ -386,15 +321,11 @@ function displayHeader(day) {
     day = Number(day)
     switch (day) {
         case 0:
-            header="Today's Films"
-            break;
-    
-        case 1:
-            header="Tomorrow's Films"
+            header="Films du jour"
             break;
 
         default:
-            header="J+"+day+"s' Films"
+            header= "Films de "+getDayFromInt(day)
             break;
     }
 
@@ -459,30 +390,6 @@ function displayTable(arrOfFilmObject) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //GET INFOS FROM THE DOM
 function getDay() {
     let day = document.querySelector('#day-select').value // 0 to 6
@@ -534,13 +441,6 @@ function getRating() {
     }
     return rating // 0 to 5
 }
-
-
-
-
-
-
-
 
 
 
