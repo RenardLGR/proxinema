@@ -22,17 +22,39 @@ displayDays()
 document.querySelector('#fire').addEventListener('click', fire)
 
 
+function clearMovieList()
+{
+	//Clear list movie
+	if (document.querySelector('tbody'))
+	{
+		console.log("test")
+		document.querySelector('table').removeChild(document.querySelector('tbody'))
+		
+		const listMovies_l = document.createElement('tbody') 
+		const movie_l = document.createElement('tr') 
+		listMovies_l.id = "list-movies"//
+		listMovies_l.appendChild(movie_l)
+		
+		document.querySelector('table').appendChild(listMovies_l)
+	}
+	
+	
+	
+}
 function fire() {
 
     let day=getDay()
     //let day=1
-    let listOfFilmsObjects=[]
+	
+	clearMovieList()
     displayHeader(day)
 
 
+	
     fetchAll( getArrayOfUrl(cinemasList, day) , [] )
 
 }
+
 
 
 
@@ -330,12 +352,25 @@ function displayHeader(day) {
     }
 
     //Which day Cell / Title
-    let headerRow=document.createElement('tr')
-    let th=document.createElement('th')
-    th.colSpan='2'
-    th.innerText=header
-    headerRow.appendChild(th)
-    document.querySelector('thead').appendChild(headerRow)
+	
+	let th
+	if (document.querySelector('#headerdate'))
+	{
+		th = document.querySelector('#headerdate')
+		th.innerText=header
+	}
+	else
+	{
+		let headerRow=document.createElement('tr')
+		let th=document.createElement('th')
+		th.colSpan='2'
+		th.innerText=header
+		th.id ='headerdate'
+		headerRow.appendChild(th)
+		document.querySelector('thead').appendChild(headerRow)
+	}
+	
+
 }
 
 function displayTable(arrOfFilmObject) {
