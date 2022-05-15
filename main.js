@@ -35,21 +35,24 @@ function fire() {
 }
 
 
-//DISPLAY FUNCTION
 
+function getDayFromInt(day)
+{
+	const weekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+	return weekday[day];
+	
+}
 function displayDays() {
     let header
 
 	
-	const weekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
 
 	const d = new Date();
-	let day = weekday[d.getDay()];
+	let day = getDayFromInt(d.getDay())
 	
 	
 	for (let i=0; i<7;i++) {
-		let day = weekday[d.getDay()+i];
-		console.log(day)
+		let day = getDayFromInt(d.getDay()+i);
 		const option = document.createElement('option') 
 		option.value = i//
 		option.innerText = day // 
@@ -318,15 +321,11 @@ function displayHeader(day) {
     day = Number(day)
     switch (day) {
         case 0:
-            header="Today's Films"
-            break;
-    
-        case 1:
-            header="Tomorrow's Films"
+            header="Films du jour"
             break;
 
         default:
-            header="J+"+day+"s' Films"
+            header= "Films de "+getDayFromInt(day)
             break;
     }
 
