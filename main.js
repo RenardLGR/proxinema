@@ -27,7 +27,7 @@ function clearMovieList()
 	//Clear list movie
 	if (document.querySelector('tbody'))
 	{
-		console.log("test")
+		
 		document.querySelector('table').removeChild(document.querySelector('tbody'))
 		
 		const listMovies_l = document.createElement('tbody') 
@@ -36,11 +36,10 @@ function clearMovieList()
 		listMovies_l.appendChild(movie_l)
 		
 		document.querySelector('table').appendChild(listMovies_l)
-	}
-	
-	
-	
+	}	
 }
+
+
 function fire() {
 
     let day=getDay()
@@ -58,29 +57,23 @@ function fire() {
 
 
 
-function getDayFromInt(day)
-{
-	const weekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
-	return weekday[day];
-	
-}
 function displayDays() {
-    let header
+    //select options are varying from which day we are
 
-	
-
-	const d = new Date();
-	let day = getDayFromInt(d.getDay())
-	
+	const today = new Date();
 	
 	for (let i=0; i<7;i++) {
-		let day = getDayFromInt(d.getDay()+i);
+		let day = getDayFromInt(today.getDay()+i);
 		const option = document.createElement('option') 
-		option.value = i//
-		option.innerText = day // 
+		option.value = i
+		option.innerText = day
 		document.querySelector('#day-select').appendChild(option)
-
 	}	
+
+    function getDayFromInt(day){
+        const weekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+        return weekday[day];	
+    }
 
 }
 
