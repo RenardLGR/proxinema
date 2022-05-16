@@ -16,6 +16,7 @@ const days = ['' , 'd-1/' , 'd-2/' , 'd-3/' , 'd-4/' , 'd-5/' , 'd-6/']
 // exemple : https://www.allocine.fr/_/showtimes/theater-C0153/d-6/
 
 
+
 displayDays()
 
 
@@ -47,14 +48,17 @@ function fire() {
 	
 	clearMovieList()
     displayHeader(day)
-
-
 	
     fetchAll( getArrayOfUrl(cinemasList, day) , [] )
 
+    
 }
 
 
+function getDayFromInt(day){
+    const weekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+    return weekday[day];	
+}
 
 
 function displayDays() {
@@ -69,11 +73,6 @@ function displayDays() {
 		option.innerText = day
 		document.querySelector('#day-select').appendChild(option)
 	}	
-
-    function getDayFromInt(day){
-        const weekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
-        return weekday[day];	
-    }
 
 }
 
@@ -107,7 +106,7 @@ function fetchAll(urlArr, list) {
 
         displayTable(result)
 
-        
+        return result
 
 
     }else {
@@ -334,13 +333,16 @@ function filterFilmsAfterAGivenTime(arrOfFilmObject, time) {
 function displayHeader(day) {
     let header
     day = Number(day)
+
+    const today = new Date();
+
     switch (day) {
         case 0:
             header="Films du jour"
             break;
 
         default:
-            header= "Films de "+getDayFromInt(day)
+            header= "Films de "+getDayFromInt(day + today.getDay())
             break;
     }
 
