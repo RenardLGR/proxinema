@@ -420,6 +420,7 @@ function displayTable(arrOfFilmObject) {
         let span = document.createElement('span')
         span.innerText = 'More'
         span.classList.add('film'+idx)
+        span.classList.add('more')
         span.onclick = retrieveFilmObjectWhenClickMore
 
         linkTitleCell.href = filmUrl

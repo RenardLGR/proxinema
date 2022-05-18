@@ -87,6 +87,16 @@ td.title {
     font-size: 2rem;
 }
 
+span.more {
+    cursor: pointer;
+}
+
+span.more:hover{
+    color: purple;
+    border: 0px solid black;
+    border-radius: 5px;
+    background-color: rgb(83, 135, 135);
+}
 
 
 /* DETAILS OF A FILM */
@@ -96,6 +106,7 @@ div.film-full-info {
     left: 30px; /* Place the button 30px from the right */
     border: 2px solid red;
 }
+
 
 
 /* TO TOP BUTTON STYLES */
