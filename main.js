@@ -4,7 +4,6 @@ const cinemasList = [ ['LUMINOR+HOTEL+DE+VILLE' , 'C0013'] , ['CINEMA+DU+PANTHEO
 
 //SAINT GERMAIN DES PRES (BILBOQUET) Place St Germain des Prés 75006 PARIS ne retourne pas de résultats => retiré de la liste
 
-//C0117 pose problème??
 
 const proxyUrl = 'https://api.codetabs.com/v1/proxy?quest='
 
@@ -16,29 +15,14 @@ const days = ['' , 'd-1/' , 'd-2/' , 'd-3/' , 'd-4/' , 'd-5/' , 'd-6/']
 // exemple : https://www.allocine.fr/_/showtimes/theater-C0153/d-6/
 
 
+let globalAllFilms = []
 
-displayDays()
+displayDays()//Make the select have different days depending on today's date
 
 
 document.querySelector('#fire').addEventListener('click', fire)
 
 
-function clearMovieList()
-{
-	//Clear list movie
-	if (document.querySelector('tbody'))
-	{
-		
-		document.querySelector('table').removeChild(document.querySelector('tbody'))
-		
-		const listMovies_l = document.createElement('tbody') 
-		const movie_l = document.createElement('tr') 
-		listMovies_l.id = "list-movies"//
-		listMovies_l.appendChild(movie_l)
-		
-		document.querySelector('table').appendChild(listMovies_l)
-	}	
-}
 
 
 function fire() {
@@ -48,12 +32,20 @@ function fire() {
 	
 	clearMovieList()
     displayHeader(day)
-	
-    fetchAll( getArrayOfUrl(cinemasList, day) , [] )
 
-    
+    fetchAll(getArrayOfUrl(cinemasList, day))
+	
+    //fetchAll( getArrayOfUrl(cinemasList, day) , [] ) 
+
 }
 
+
+
+
+
+
+
+//DOM FUNCTIONS AT PAGE LOAD
 
 function getDayFromInt(day){
     const weekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
@@ -78,8 +70,7 @@ function displayDays() {
 
 
 
-//should work...
-//fetchAll( getArrayOfUrl(cinemasList, 1) , [] )
+//FETCH FUNCTIONS
 
 
 function getArrayOfUrl (cinemasList, day) {
@@ -93,44 +84,50 @@ function getArrayOfUrl (cinemasList, day) {
 }
 
 
-function fetchAll(urlArr, list) {
-    let result=list
-
-    if(urlArr.length<=0) {
-        console.log('allFilms : ',result)
-
-        let preference=getPreference() //preference = [era, earliestFilmTime, rating]
-
-        result = filterFilms(preference, result)
-        console.log('Filtered Films : ',result)
-
-        displayTable(result)
-
-        return result
-
-
-    }else {
-        fetch(urlArr[0][1])
-        .then(res => res.json())
-        .then(data => {
-
-            //calls
-            result.concat( getInfosOfACinema(data, urlArr[0][0], list) )
-            urlArr.shift()
-
-            //fetchAll(urlArr, list)
-            fetchAll(urlArr, result) //both seems to work and give the same result but I can't see why
-            
-
-
-
-            //console.log(list);
-
-
-        })
-        .catch(err=> console.log(err))
+function fetchAll(urlArr) {
+    let arrOfFetch = []
+    for(let i=0 ; i<urlArr.length ; i++) {
+        let fetchReq = fetch(urlArr[i][1]).then(res=>res.json())
+        arrOfFetch.push(fetchReq)
     }
+
+    let allData = Promise.all(arrOfFetch)
+    allData.then(data => {
+        console.log('HERE ARE THE PRECIOUS DATA :' , data)
+        //data is an array of 20 cinemas' projections
+        let arrFilmObj = []
+        for (let i=0 ; i<cinemasList.length ; i++){
+            arrFilmObj = arrFilmObj.concat( getInfosOfACinema(data[i] , cinemasList[i]) )
+        }
+
+        console.log('All films :', arrFilmObj);
+
+        let preference=getPreference()
+
+        arrFilmObj = filterFilms(preference, arrFilmObj)
+        console.log('Filtered Films :', arrFilmObj)
+
+        globalAllFilms = arrFilmObj.slice()
+        //console.log(globalAllFilms);
+        displayTable(arrFilmObj)
+    })
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -153,7 +150,7 @@ class FilmMaker {
 }
 
 
-function getInfosOfACinema(data, cinema, totalList) {
+function getInfosOfACinema(data, cinema) {
     //Takes data of 1 cinema, cinemaName, a list of films
     //pushes films to the total list
     //Returns the list of films of said cinema
@@ -163,6 +160,7 @@ function getInfosOfACinema(data, cinema, totalList) {
 
 
     let result = data.results //this is what matter to us for each cinemas. It is an array of [ {{movie}, {showtimes}}, {{movie}, {showtimes}}, etc. ]
+
 
     let listToReturn=[]
 
@@ -195,14 +193,13 @@ function getInfosOfACinema(data, cinema, totalList) {
         let runtime = result[j].movie.runtime ??'runtime inconnu'
 
 
-        totalList.push(new FilmMaker(title, rating,  synopsis, showtimes, poster, genre, releaseDate, director, runtime, cinema))
+        //totalList.push(new FilmMaker(title, rating,  synopsis, showtimes, poster, genre, releaseDate, director, runtime, cinema))
 
         listToReturn.push(new FilmMaker(title, rating,  synopsis, showtimes, poster, genre, releaseDate, director, runtime, cinema))
 
     }
 
     return listToReturn
-    
 }
 
 
@@ -330,6 +327,23 @@ function filterFilmsAfterAGivenTime(arrOfFilmObject, time) {
 
 //DISPLAY FUNCTION
 
+function clearMovieList()
+{
+	//Clear list movie
+	if (document.querySelector('tbody'))
+	{
+		
+		document.querySelector('table').removeChild(document.querySelector('tbody'))
+		
+		const listMovies_l = document.createElement('tbody') 
+		const movie_l = document.createElement('tr') 
+		listMovies_l.id = "list-movies"//
+		listMovies_l.appendChild(movie_l)
+		
+		document.querySelector('table').appendChild(listMovies_l)
+	}	
+}
+
 function displayHeader(day) {
     let header
     day = Number(day)
@@ -376,14 +390,15 @@ function displayTable(arrOfFilmObject) {
         let filmUrl=arrOfFilmObject[i].title.split(' ').join('%20')
         filmUrl='https://google.com/search?q='+filmUrl+' horaires'
 
-        createARow(arrOfFilmObject[i].poster , arrOfFilmObject[i].title, filmUrl)
+        createARow(arrOfFilmObject[i].poster , arrOfFilmObject[i].title, filmUrl, i)
     }
 
 
 
-    function createARow(posterURL, title, filmUrl) {
+    function createARow(posterURL, title, filmUrl, idx) {
         //create a row with given infos
         let row = document.createElement('tr')
+        row.classList.add('film'+idx)
 
         //Poster cell
         let posterCell= document.createElement('td')
@@ -402,12 +417,18 @@ function displayTable(arrOfFilmObject) {
         //Title cell
         let titleCell=document.createElement('td')
         let linkTitleCell = document.createElement('a')
+        let span = document.createElement('span')
+        span.innerText = 'More'
+        span.classList.add('film'+idx)
+        span.onclick = retrieveFilmObjectWhenClickMore
+
         linkTitleCell.href = filmUrl
         linkTitleCell.target = '_blank'
         linkTitleCell.innerText = title
         let titleText = document.createElement('h2')
         titleText.appendChild(linkTitleCell) // <h2> <a href=filmurl> title </a> </h2>
         titleCell.appendChild(titleText) //td h2 a /h2 /td
+        titleCell.appendChild(span)
 
         row.appendChild(titleCell) //tr td tr
 
@@ -475,6 +496,36 @@ function getRating() {
 
 
 //=================================================================================================================================================================================
+
+//INTERACTION FUNCTIONS
+
+//        totalList.push(new FilmMaker(title, rating,  synopsis, showtimes, poster, genre, releaseDate, director, runtime, cinema))
+
+function retrieveFilmObjectWhenClickMore() {
+    let idx = event.target.classList[0].slice(4)
+    let film =  globalAllFilms[idx]
+
+    let container = document.querySelector('.film-full-info')
+
+    let poster = document.querySelector('.film-full-info img.poster')
+    poster.src = film['poster']
+
+    let title = document.querySelector('.film-full-info .title')
+    title.innerText = film['title']
+
+    let director = document.querySelector('.film-full-info .director')
+    director.innerText = 'Par :' + film['director']
+
+    let genres = document.querySelector('.film-full-info .genres')
+    genres.innerText=''
+    for (let i of film['genre']) {
+        genres.innerText += ' '+ i + ' '
+    }
+
+    let synopsis = document.querySelector('.film-full-info .synopsis')
+    synopsis.innerText=film['synopsis']
+}
+
 //Get the button:
 let mybutton = document.getElementById("to-top-button");
 
