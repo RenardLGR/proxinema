@@ -403,7 +403,7 @@ function displayTable(arrOfFilmObject) {
         //Poster cell
         let posterCell= document.createElement('td')
         let linkPosterCell = document.createElement('a')
-        posterCell.classList.add('poster')
+        posterCell.classList.add('poster-cell')
         linkPosterCell.title=title
         linkPosterCell.href= filmUrl
         linkPosterCell.target = '_blank'
@@ -416,6 +416,7 @@ function displayTable(arrOfFilmObject) {
     
         //Title cell
         let titleCell=document.createElement('td')
+        titleCell.classList.add('title-cell')
         let linkTitleCell = document.createElement('a')
         let span = document.createElement('span')
         span.innerText = 'More'
@@ -503,6 +504,8 @@ function getRating() {
 //        totalList.push(new FilmMaker(title, rating,  synopsis, showtimes, poster, genre, releaseDate, director, runtime, cinema))
 
 function retrieveFilmObjectWhenClickMore() {
+    try{document.querySelector('.film-full-info.hidden').classList.remove('hidden')}catch(error){}
+
     let idx = event.target.classList[0].slice(4)
     let film =  globalAllFilms[idx]
 
@@ -515,7 +518,7 @@ function retrieveFilmObjectWhenClickMore() {
     title.innerText = film['title']
 
     let director = document.querySelector('.film-full-info .director')
-    director.innerText = 'Par :' + film['director']
+    director.innerText = 'Par : ' + film['director']
 
     let genres = document.querySelector('.film-full-info .genres')
     genres.innerText=''

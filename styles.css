@@ -77,14 +77,25 @@ tr, td {
     border: 1px solid whitesmoke;
 }
 
-td.poster {
+td.poster-cell {
     text-align: center;
-    width: 30%;
+    width: 20%;
 }
 
-td.title {
+td.title-cell {
     width: 70%;
+}
+
+td.title-cell > * {
+    margin-left: 20px;
+}
+
+td.title-cell h2 { /* film title */
     font-size: 2rem;
+}
+
+td.title-cell span { /* more span */
+    font-size: 1rem;
 }
 
 span.more {
@@ -100,14 +111,45 @@ span.more:hover{
 
 
 /* DETAILS OF A FILM */
+.film-full-info.hidden {
+    display: none;
+}
+
 div.film-full-info {
+    max-width: 23vw;
     position: fixed;
-    bottom: 50px; /* Place the button at the bottom of the page */
-    left: 30px; /* Place the button 30px from the right */
+    bottom: 20vw; /* Place the button at the bottom of the page */
+    left: 20px; /* Place the button 30px from the right */
     border: 2px solid red;
 }
 
+div.film-full-info > div { /* contains 2 divs : 1 with the poster ; the other with title, actors, etc */
+    display: flex;
+}
 
+div.film-full-info > div > .poster {
+    flex: 0.7;
+    border: 1px solid green;
+
+    /* should center hor and vert the img */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.film-full-info > div > .poster > img {
+    max-width:100%;
+    max-height:100%;
+}
+
+
+div.film-full-info > div > .title-dir-etc {
+    flex: 2;
+}
+
+div.film-full-info > div > .title-dir-etc > h2,h3,h4 {
+    font-size: 1rem;
+}
 
 /* TO TOP BUTTON STYLES */
 
