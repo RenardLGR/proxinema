@@ -123,15 +123,15 @@ div.film-full-info {
     border: 2px solid red;
 }
 
-div.film-full-info > div { /* contains 2 divs : 1 with the poster ; the other with title, actors, etc */
+div.film-full-info > div.poster-and-title-dir-etc { /* contains 2 divs : 1 with the poster ; the other with title, actors, etc */
     display: flex;
 }
 
-div.film-full-info > div > .poster {
+div.film-full-info > div > .poster { /*poster cell*/
     flex: 0.7;
     border: 1px solid green;
 
-    /* should center hor and vert the img */
+    /* should center horizont and vert the img */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -143,12 +143,35 @@ div.film-full-info > div > .poster > img {
 }
 
 
-div.film-full-info > div > .title-dir-etc {
+div.film-full-info > div > .title-dir-etc { /*title, actors, etc cell*/
     flex: 2;
 }
 
 div.film-full-info > div > .title-dir-etc > h2,h3,h4 {
     font-size: 1rem;
+    font-weight: 600;
+    margin-top: 0;
+}
+
+div.film-full-info > div.synopsis { /*synopsis cell*/
+    font-size: 1.1rem;
+}
+
+
+div.film-full-info > div.place-and-showtimes > div.cinema-name h2 { /*cinema name*/
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+div.place-and-showtimes > div.showtimes-and-language-container { /*showtimes and language container*/
+    display: flex;
+    justify-content: space-evenly;
+}
+
+div.place-and-showtimes > div.showtimes-and-language-container > div.showtimes-and-language { /* each seance */
+    flex: 1;
+    border: 1px solid orange;
+    text-align: center;
 }
 
 /* TO TOP BUTTON STYLES */

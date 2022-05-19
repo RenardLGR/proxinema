@@ -1,5 +1,6 @@
 const hi = 'hello'
 
+
 const cinemasList = [ ['LUMINOR+HOTEL+DE+VILLE' , 'C0013'] , ['CINEMA+DU+PANTHEON' , 'C0076'] , ['ECOLES+CINEMA+CLUB+(ECOLES+21)' , 'C0071'] , ['EPEE+DE+BOIS' , 'C0042'] , ['ESPACE+SAINT+MICHEL' , 'C0117'] , ['LA+FILMOTHEQUE+QUARTIER+LATIN' , 'C0020'] , ['LE+CHAMPO' , 'C0073'] , ['LE+GRAND+ACTION' , 'C0072'] , ['LE+REFLET+MEDICIS' , 'C0074'] , ['STUDIO+GALANDE' , 'C0016'] , ['CHRISTINE+CINEMA+CLUB+(CHRISTINE+21)' , 'C0015'] , ["L'ARLEQUIN" , 'C0054'] , ['LE+LUCERNAIRE' , 'C0093'] , ['LE+NOUVEL+ODEON' , 'C0041'] , ['LE+SAINT-ANDRE+DES+ARTS' , 'C0100'] , ['LES+3+LUXEMBOURG' , 'C0095'] , ["L'ESCURIAL PANORAMA" , 'C0147'] , ["L'ENTREPOT+CINEMA" , 'C0005'] , ['LES+7+PARNASSIENS' , 'C0025'] , ['CHAPLIN+DENFERT' , 'C0153']] //20 elements
 
 //SAINT GERMAIN DES PRES (BILBOQUET) Place St Germain des Prés 75006 PARIS ne retourne pas de résultats => retiré de la liste
@@ -528,6 +529,18 @@ function retrieveFilmObjectWhenClickMore() {
 
     let synopsis = document.querySelector('.film-full-info .synopsis')
     synopsis.innerText=film['synopsis']
+
+
+    let cinemaName = document.querySelector('h2.cinema-name')
+    cinemaName.innerText = film.cinema[0].replaceAll('+' , ' ')
+
+    let showtimesContainer = document.querySelector('div.showtimes-and-language-container')
+    for(let seance of film.showtime) {
+        let cell = document.createElement('div')
+        cell.classList.add("showtimes-and-language")
+        cell.innerText = seance[0]+ '\n' + seance[1].slice(-8,-3)
+        showtimesContainer.appendChild(cell)
+    }
 }
 
 //Get the button:
