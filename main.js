@@ -527,6 +527,9 @@ function retrieveFilmObjectWhenClickMore() {
     let title = document.querySelector('.film-full-info .title')
     title.innerText = film['title']
 
+    let releaseNRuntime = document.querySelector('span.release-runtime')
+    releaseNRuntime.innerText = film['releaseDate'].slice(0,4) + ' - ' + film['runtime']
+
     let director = document.querySelector('.film-full-info .director')
     director.innerText = 'Par : ' + film['director']
 

@@ -137,6 +137,11 @@ div.film-full-info > div.close-button:hover {
     cursor: pointer;
 }
 
+div.film-full-info > span.release-runtime {
+    display: block;
+    font-size: 0.8rem;
+}
+
 div.film-full-info > div.poster-and-title-dir-etc { /* contains 2 divs : 1 with the poster ; the other with title, actors, etc */
     display: flex;
 }
