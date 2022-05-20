@@ -135,7 +135,7 @@ function fetchAll(urlArr) {
 //BUILDING FUNCTIONS
 class FilmMaker {
     //create an object for each film containing multiple keys like : title, genre, director, etc
-    constructor (title, rating, synopsis, showtime, poster='', genre, releaseDate, director, runtime, cinema) {
+    constructor (title, rating, synopsis, showtime, poster='', genre, releaseDate, director, actors, runtime, cinema) {
         this.title=title
         this.rating=rating
         this.synopsis=synopsis
@@ -145,6 +145,7 @@ class FilmMaker {
         this.genre=genre
         this.releaseDate=releaseDate
         this.director=director
+        this.actors=actors
         this.runtime=runtime
         this.cinema=cinema
     }
@@ -193,10 +194,17 @@ function getInfosOfACinema(data, cinema) {
         let director = result[j].movie.credits[0]?.person?.firstName+ ' '+result[j].movie.credits[0]?.person?.lastName ?? 'director inconnu'
         let runtime = result[j].movie.runtime ??'runtime inconnu'
 
+        let actors = []
+            for (let actor of result[j].movie.cast.nodes) {
+                try{
+                    actors.push(actor.actor['firstName'] + ' ' + actor.actor['lastName'])
+                }catch(error){}
+            }
+
 
         //totalList.push(new FilmMaker(title, rating,  synopsis, showtimes, poster, genre, releaseDate, director, runtime, cinema))
 
-        listToReturn.push(new FilmMaker(title, rating,  synopsis, showtimes, poster, genre, releaseDate, director, runtime, cinema))
+        listToReturn.push(new FilmMaker(title, rating,  synopsis, showtimes, poster, genre, releaseDate, director, actors, runtime, cinema))
 
     }
 
@@ -505,9 +513,10 @@ function getRating() {
 //        totalList.push(new FilmMaker(title, rating,  synopsis, showtimes, poster, genre, releaseDate, director, runtime, cinema))
 
 function retrieveFilmObjectWhenClickMore() {
+    //this function will display the information in the more box
     try{document.querySelector('.film-full-info.hidden').classList.remove('hidden')}catch(error){}
 
-    let idx = event.target.classList[0].slice(4)
+    let idx = event.target.classList[0].slice(4) //get the index of the more i.e which more was clicked on
     let film =  globalAllFilms[idx]
 
     let container = document.querySelector('.film-full-info')
@@ -520,6 +529,15 @@ function retrieveFilmObjectWhenClickMore() {
 
     let director = document.querySelector('.film-full-info .director')
     director.innerText = 'Par : ' + film['director']
+
+    let actors = document.querySelector('.film-full-info .actors')
+    let actorsStr = 'Avec : '
+    actors.innerText = actorsStr
+    for(let actor of film['actors']) {
+        actorsStr += actor+', '
+    }
+    actorsStr.slice(-3)
+    actorsStr.length > 7 ? actors.innerText = actorsStr : actors.innerText += ' No information'
 
     let genres = document.querySelector('.film-full-info .genres')
     genres.innerText=''
@@ -535,6 +553,13 @@ function retrieveFilmObjectWhenClickMore() {
     cinemaName.innerText = film.cinema[0].replaceAll('+' , ' ')
 
     let showtimesContainer = document.querySelector('div.showtimes-and-language-container')
+
+    let showtimeChild = showtimesContainer.lastElementChild //clear section
+    while(showtimeChild) {
+        showtimesContainer.removeChild(showtimeChild)
+        showtimeChild = showtimesContainer.lastElementChild
+    }
+
     for(let seance of film.showtime) {
         let cell = document.createElement('div')
         cell.classList.add("showtimes-and-language")
@@ -542,6 +567,12 @@ function retrieveFilmObjectWhenClickMore() {
         showtimesContainer.appendChild(cell)
     }
 }
+
+//CLOSE BUTTON IN THE DETAILS BOX
+let closeButton = document.querySelector('.close-button').addEventListener('click' , function() {
+    document.querySelector('.film-full-info').classList.add('hidden')
+})
+
 
 //Get the button:
 let mybutton = document.getElementById("to-top-button");

@@ -11,7 +11,7 @@
 <body>
 
 
-    <div class="filters hidden">
+    <div class="filters">
 
         <section id="era-container">
             <label for="era-select">Select from which era</label>
@@ -27,7 +27,7 @@
             <input type="text" id="time-input" value="all">
         </section>
 
-        <section id="rating-container">
+        <section id="rating-container" class="hidden">
             <label for="rating-input">Select your minimum rating. Please enter any number between 0 and 5 included</label>
             <input type="number" id="rating-input" value="0" min="0" max="5">
         </section>
@@ -62,7 +62,9 @@
 
     </div>
 
-    <div class="film-full-info hidden">
+    <div class="film-full-info">
+        <div  class="close-button">✖</div>
+
         <!-- Poster on left   details on right-->
         <div class="poster-and-title-dir-etc">
             <div class="poster"><img src="http://placekitten.com/70/110" alt="" class="poster"></div>
