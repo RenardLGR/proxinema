@@ -143,7 +143,7 @@ div.film-full-info > div.poster-and-title-dir-etc { /* contains 2 divs : 1 with 
 
 div.film-full-info > div > .poster { /*poster cell*/
     flex: 0.7;
-    border: 1px solid green;
+    /* border: 1px solid green; */
 
     /* should center horizont and vert the img */
     display: flex;
@@ -169,6 +169,7 @@ div.film-full-info > div > .title-dir-etc > h2,h3,h4 {
 
 div.film-full-info > div.synopsis { /*synopsis cell*/
     font-size: 1.1rem;
+    margin-top: 5px;
 }
 
 

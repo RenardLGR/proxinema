@@ -510,7 +510,7 @@ function getRating() {
 
 //INTERACTION FUNCTIONS
 
-//        totalList.push(new FilmMaker(title, rating,  synopsis, showtimes, poster, genre, releaseDate, director, runtime, cinema))
+//        totalList.push(new FilmMaker(title, rating,  synopsis, showtimes, poster, genre, releaseDate, director, actors, runtime, cinema))
 
 function retrieveFilmObjectWhenClickMore() {
     //this function will display the information in the more box
@@ -536,7 +536,7 @@ function retrieveFilmObjectWhenClickMore() {
     for(let actor of film['actors']) {
         actorsStr += actor+', '
     }
-    actorsStr.slice(-3)
+    actorsStr = actorsStr.slice(0,-2)
     actorsStr.length > 7 ? actors.innerText = actorsStr : actors.innerText += ' No information'
 
     let genres = document.querySelector('.film-full-info .genres')
@@ -563,7 +563,7 @@ function retrieveFilmObjectWhenClickMore() {
     for(let seance of film.showtime) {
         let cell = document.createElement('div')
         cell.classList.add("showtimes-and-language")
-        cell.innerText = seance[0]+ '\n' + seance[1].slice(-8,-3)
+        cell.innerText = seance[0]+ '\n' + seance[1].slice(-8,-3) //removes year and second
         showtimesContainer.appendChild(cell)
     }
 }
