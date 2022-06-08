@@ -17,6 +17,7 @@ const days = ['' , 'd-1/' , 'd-2/' , 'd-3/' , 'd-4/' , 'd-5/' , 'd-6/']
 
 
 let globalAllFilms = []
+let globalFilteredFilms = []
 
 initializeFiltersValues()
 
@@ -46,11 +47,12 @@ function applyFilters() {
     //The apply filter button can be used without sending a new fetch request
     arrFilmObj = globalAllFilms.slice()
 
-    console.log('All films :', arrFilmObj);
+    console.log('All films :', globalAllFilms);
 
     let preference=getPreference()
 
     arrFilmObj = filterFilms(preference, arrFilmObj)
+    globalFilteredFilms = arrFilmObj.slice()
     console.log('Filtered Films :', arrFilmObj)
 
     //console.log(globalAllFilms);
@@ -132,13 +134,14 @@ function fetchAll(urlArr) {
         }
 
         console.log('All films :', arrFilmObj);
+        globalAllFilms = arrFilmObj.slice()
 
         let preference=getPreference()
 
         arrFilmObj = filterFilms(preference, arrFilmObj)
         console.log('Filtered Films :', arrFilmObj)
 
-        globalAllFilms = arrFilmObj.slice()
+        globalFilteredFilms = arrFilmObj.slice()
         //console.log(globalAllFilms);
         displayTable(arrFilmObj)
     })
@@ -547,7 +550,10 @@ function retrieveFilmObjectWhenClickMore() {
     try{document.querySelector('.film-full-info.hidden').classList.remove('hidden')}catch(error){}
 
     let idx = event.target.classList[0].slice(4) //get the index of the more i.e which more was clicked on
-    let film =  globalAllFilms[idx]
+    console.log(idx);
+    //let film =  globalAllFilms[idx]
+    let film = globalFilteredFilms[idx]
+    console.log(film);
 
     let container = document.querySelector('.film-full-info')
 
