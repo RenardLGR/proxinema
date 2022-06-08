@@ -550,10 +550,8 @@ function retrieveFilmObjectWhenClickMore() {
     try{document.querySelector('.film-full-info.hidden').classList.remove('hidden')}catch(error){}
 
     let idx = event.target.classList[0].slice(4) //get the index of the more i.e which more was clicked on
-    console.log(idx);
     //let film =  globalAllFilms[idx]
     let film = globalFilteredFilms[idx]
-    console.log(film);
 
     let container = document.querySelector('.film-full-info')
 
