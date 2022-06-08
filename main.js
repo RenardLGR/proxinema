@@ -18,10 +18,11 @@ const days = ['' , 'd-1/' , 'd-2/' , 'd-3/' , 'd-4/' , 'd-5/' , 'd-6/']
 
 let globalAllFilms = []
 
-displayDays()//Make the select have different days depending on today's date
+initializeFiltersValues()
 
 
 document.querySelector('#fire').addEventListener('click', fire)
+document.querySelector('#applyFilters').addEventListener('click', applyFilters)
 
 
 
@@ -41,7 +42,21 @@ function fire() {
 }
 
 
+function applyFilters() {
+    //The apply filter button can be used without sending a new fetch request
+    arrFilmObj = globalAllFilms.slice()
 
+    console.log('All films :', arrFilmObj);
+
+    let preference=getPreference()
+
+    arrFilmObj = filterFilms(preference, arrFilmObj)
+    console.log('Filtered Films :', arrFilmObj)
+
+    //console.log(globalAllFilms);
+    clearMovieList()
+    displayTable(arrFilmObj)
+}
 
 
 
@@ -51,6 +66,21 @@ function fire() {
 function getDayFromInt(day){
     const weekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
     return weekday[day];	
+}
+
+
+function initializeFiltersValues() {
+    //initialize what is shown in the filters ; i.e. time of now and day of today
+    freeTimeSetToNow()
+    displayDays()
+}
+
+function freeTimeSetToNow() {
+    //input of time has now the default value of now
+
+    const today = new Date()
+    let time = today.getHours() + ":" + today.getMinutes()
+    document.getElementById('time-input').value = time
 }
 
 

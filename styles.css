@@ -42,14 +42,20 @@ div.filters input {
 }
 
 
-div.fire {
+div.fire, div.applyFilters {
     text-align: center;
 }
 
 div.fire button {
     cursor: pointer;
-    margin: 50px 0;
+    margin: 20px 0;
     font-size: 3rem;
+}
+
+div.applyFilters button {
+    cursor: pointer;
+    margin: 20px 0;
+    font-size: 1.2rem;
 }
 
 /* TABLE STYLES */
