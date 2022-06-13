@@ -73,7 +73,7 @@ function getDayFromInt(day){
 
 function initializeFiltersValues() {
     //initialize what is shown in the filters ; i.e. time of now and day of today
-    freeTimeSetToNow()
+    //freeTimeSetToNow()
     displayDays()
 }
 
