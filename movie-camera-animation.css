@@ -27,7 +27,8 @@
     animation: rotateClockwise 1.5s linear infinite;
 }
 .film-img-counter-clockwise {
-    animation: rotateCounterClockwise 1.5s linear infinite;
+    border-radius: 20px;
+    animation: rotateCounterClockwise 2s linear infinite;
 }
 
 .camera {
