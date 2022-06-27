@@ -55,3 +55,48 @@
     }
 }
 
+
+/* SHINY EFFECT */
+
+.light-ray{
+    position: absolute;
+    animation: blinker 1.5s linear infinite;
+}
+
+#light-ray-1{
+    width: 15px;
+    height: 2px;
+    background-color: rgb(255, 210, 94);
+    /* border-top: 2px solid rgb(255, 210, 94); */
+    transform: translateX(44px) rotate(-22deg) translateY(22px);
+}
+
+#light-ray-2{
+    width: 11px;
+    height: 2px;
+    background-color: rgb(255, 210, 94);
+    /* border-top: 2px solid rgb(255, 210, 94); */
+    transform: translateX(64px) rotate(-10deg) translateY(26px);
+}
+
+#light-ray-3{
+    width: 11px;
+    height: 2px;
+    background-color: rgb(255, 210, 94);
+    /* border-bottom: 2px solid rgb(255, 210, 94); */
+    transform: translateX(73px) rotate(187deg) translateY(-47px);
+}
+
+#light-ray-4{
+    width: 15px;
+    height: 2px;
+    background-color: rgb(255, 210, 94);
+    /* border-bottom: 2px solid rgb(255, 210, 94); */
+    transform: translateX(68px) rotate(195deg) translateY(-56px);
+}
+
+
+  
+@keyframes blinker {  
+50% { opacity: 0.4; }
+}
