@@ -26,6 +26,15 @@ img {
     font-style: italic;
 }
 
+.logo{
+    float: left;
+    font-family: 'Lobster', cursive;
+    font-size: 4rem;
+    letter-spacing: 3.5px;
+    text-shadow: 15px 15px rgba(255,255,255,0.1);
+    margin-top: 0px;
+}
+
 
 div.filters {
     max-width: 1600px;
