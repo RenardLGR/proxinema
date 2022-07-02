@@ -562,7 +562,8 @@ function retrieveFilmObjectWhenClickMore() {
     title.innerText = film['title']
 
     let releaseNRuntime = document.querySelector('span.release-runtime')
-    releaseNRuntime.innerText = film['releaseDate'].slice(0,4) + ' - ' + film['runtime']
+    // releaseNRuntime.innerText = film['releaseDate'].slice(0,4) + ' - ' + film['runtime']
+    releaseNRuntime.innerText = `${film['releaseDate'].slice(0,4)} - ${film['runtime']} - ${film['rating']}/5`
 
     let director = document.querySelector('.film-full-info .director')
     director.innerText = 'Par : ' + film['director']
