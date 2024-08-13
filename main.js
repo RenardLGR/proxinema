@@ -14,6 +14,8 @@ const days = ['' , 'd-1/' , 'd-2/' , 'd-3/' , 'd-4/' , 'd-5/' , 'd-6/']
 
 //const urlToFetch = proxyUrl+allocineURL+theater+days
 // exemple : https://www.allocine.fr/_/showtimes/theater-C0153/d-6/
+// edit 13/08/2024, ils ont changé le format, c'est maintenant :
+// https://www.allocine.fr/_/showtimes/theater-C0103/d-2024-08-16/
 
 
 let globalAllFilms = []
@@ -101,6 +103,19 @@ function displayDays() {
 
 }
 
+function getFormattedDate(day) {
+    const today = new Date();
+    today.setDate(today.getDate() + Number(day));
+    const y = today.getFullYear();
+    const m = String(today.getMonth() + 1).padStart(2, '0');
+    const d = String(today.getDate()).padStart(2, '0');
+    console.log(`${y}-${m}-${d}`);
+    
+    return `d-${y}-${m}-${d}`;
+
+    //return date as "d-YYYY-MM-DD" format (it is what allociné needs)
+}
+
 
 
 //FETCH FUNCTIONS
@@ -108,9 +123,13 @@ function displayDays() {
 
 function getArrayOfUrl (cinemasList, day) {
     //returns [ [Cinema_Name0 , urlDayCinema] ; [Cinema_Name1 , urlDayCinema] ; etc.]
+    let formattedDate = getFormattedDate(day)
     let result = []
     for (let i=0 ; i<cinemasList.length ; i++) {
-        let url = proxyUrl+allocineURL+cinemasList[i][1]+'/'+days[day]
+        let url = proxyUrl+allocineURL+cinemasList[i][1]+'/'+formattedDate
+        // let url = allocineURL+cinemasList[i][1]+'/'+formattedDate
+        console.log(url);
+        
         result.push([ cinemasList[i][0] , url])
     }
     return result
@@ -120,7 +139,21 @@ function getArrayOfUrl (cinemasList, day) {
 function fetchAll(urlArr) {
     let arrOfFetch = []
     for(let i=0 ; i<urlArr.length ; i++) {
-        let fetchReq = fetch(urlArr[i][1]).then(res=>res.json())
+        // let fetchReq = fetch(urlArr[i][1]).then(res=>res.json())
+        let fetchReq = fetch(urlArr[i][1])
+        .then(res => {
+            const contentType = res.headers.get("content-type")
+            if (contentType && contentType.includes("application/json")) {
+                return res.json()  // Parse and return JSON if the content-type is correct
+            } else {
+                // Skip or handle non-JSON responses here
+                return null  // Return null or some placeholder value to indicate non-JSON
+            }
+        })
+        .catch(err => {
+            console.error(`Error fetching data from ${urlArr[i][1]}:`, err)
+            return null  // Handle network errors by returning null or an appropriate placeholder
+        })
         arrOfFetch.push(fetchReq)
     }
 
@@ -130,7 +163,9 @@ function fetchAll(urlArr) {
         //data is an array of 20 cinemas' projections
         let arrFilmObj = []
         for (let i=0 ; i<cinemasList.length ; i++){
-            arrFilmObj = arrFilmObj.concat( getInfosOfACinema(data[i] , cinemasList[i]) )
+            if(data[i] !== null){
+                arrFilmObj = arrFilmObj.concat( getInfosOfACinema(data[i] , cinemasList[i]) )
+            }
         }
 
         console.log('All films :', arrFilmObj);
